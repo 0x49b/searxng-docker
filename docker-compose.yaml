@@ -40,7 +40,19 @@ services:
     networks:
       - searxng
     ports:
-     - "127.0.0.1:8080:8080"
+      - ":8080"
+    labels:
+      - "traefik.docker.network=traefik-proxy" 
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.searx-https-redirect.redirectscheme.scheme=https" 
+      - "traefik.http.routers.searx-secure.entrypoints=https"
+      - "traefik.http.routers.searx-secure.rule=Host(`search.thievent.org`)"
+      - "traefik.http.routers.searx-secure.service=searx"
+      - "traefik.http.routers.searx-secure.tls=true"
+      - "traefik.http.routers.searx-secure.tls.certresolver=http"
+      - "traefik.http.routers.searx.entrypoints=http"
+      - "traefik.http.routers.searx.middlewares=searx-https-redirect"
+      - "traefik.http.routers.searx.rule=Host(`search.thievent.org`)"
     volumes:
       - ./searxng:/etc/searxng:rw
     environment:
