@@ -40,7 +40,7 @@ services:
     networks:
       - searxng
     ports:
-      - ":8080"
+      - "8080"
     labels:
       - "traefik.docker.network=traefik-proxy" 
       - "traefik.enable=true"
